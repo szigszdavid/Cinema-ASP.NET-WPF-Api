@@ -1,0 +1,68 @@
+﻿
+@model Cinema.Persistence.Movie
+
+@{
+    ViewData["Title"] = "Create Movie";
+}
+
+<h2>Create</h2>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Director" class="control-label"></label>
+                <input asp-for="Director" class="form-control" />
+                <span asp-validation-for="Director" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Szinopszis" class="control-label"></label>
+                <input asp-for="Szinopszis" class="form-control" />
+                <span asp-validation-for="Szinopszis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Length" class="control-label"></label>
+                <input asp-for="Length" class="form-control" />
+                <span asp-validation-for="Length" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseDate" class="control-label"></label>
+                <input asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScreeningTimes" class="control-label"></label>
+                <input asp-for="ScreeningTimes" class="form-control" />
+                <span asp-validation-for="ScreeningTimes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ListId" class="control-label"></label>
+                <select asp-for="ListId" class="form-control" asp-items="ViewBag.Lists"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" type="file" accept="image/png" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

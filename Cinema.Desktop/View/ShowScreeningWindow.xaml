@@ -1,0 +1,114 @@
+﻿<Window x:Class="Cinema.Desktop.View.ShowScreeningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cinema.Desktop.View"
+        mc:Ignorable="d"
+        Title="ShowScreeningWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="2">
+            <GroupBox.Header>
+                <Label Content="Screenings:" />
+            </GroupBox.Header>
+            <DataGrid VerticalContentAlignment="Stretch" ItemsSource="{Binding Screenings}" IsReadOnly="True"
+                      AutoGenerateColumns="False" SelectedItem="{Binding SelectedScreening}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="ScreenTime" Binding="{Binding ScreenTime}" />
+                    <DataGridTextColumn Header="ScreeningHallId" Binding="{Binding ScreeningHallId}" Width="*">
+
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Seats}">
+            <!--az mezőket tároló vezérlő-->
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <!--a gombokat egy rácsba fűzzük fel-->
+                    <UniformGrid Rows="10" Columns="10" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <!--az elemek gombok lesznek-->
+                <DataTemplate>
+                    <Button Command="{Binding StepCommand}" CommandParameter="{Binding Number}" Content="{Binding Text}" Focusable="False" RenderTransformOrigin="0.5, 0.5" FontSize="24" FontWeight="Bold">
+                        <!-- gomb háttérszíne -->
+                        <!-- gomb méretezése (csak az animációnál használjuk ki) -->
+                        <Button.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </Button.RenderTransform>
+                        <Button.Style>
+                            <!-- gomb stílusa, ahol a színét megadjuk -->
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <!-- a szín egy adatkötés hatására fog változni -->
+                                    <DataTrigger Binding="{Binding SeatValue}" Value="0">
+                                        <Setter Property="Background" Value="Green" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SeatValue}" Value="1">
+                                        <Setter Property="Background" Value="Gray" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SeatValue}" Value="2">
+                                        <Setter Property="Background" Value="Orange" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SeatValue}" Value="3">
+                                        <Setter Property="Background" Value="Red" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Triggers>
+                            <!-- animációk végrehajtása esemény hatására -->
+                            <EventTrigger RoutedEvent="Button.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:00:02" From="0" To="1" Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Duration="0:00:00.2" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)">
+                                            <ColorAnimationUsingKeyFrames.KeyFrames>
+                                                <DiscreteColorKeyFrame Value="Red" KeyTime="0:00:00" />
+                                                <DiscreteColorKeyFrame Value="Black" KeyTime="0:00:00.2" />
+                                            </ColorAnimationUsingKeyFrames.KeyFrames>
+                                        </ColorAnimationUsingKeyFrames>
+                                        <DoubleAnimation Duration="0:00:00.1" From="1" To="0.5" AutoReverse="True" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" />
+                                        <DoubleAnimation Duration="0:00:00.1" From="1" To="0.5" AutoReverse="True" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <!--a függőségi tulajdonságokat kjülön kell kötnünk-->
+                <Style>
+                    <Setter Property="Grid.Row" Value="{Binding X}" />
+                    <Setter Property="Grid.Column" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+        <Button Grid.Row="3" Name="showSeatButton" Content="Show Seats" />
+        <Button Grid.Row="1" Name="makePurchaseButton" Content="Purchase"/>
+        <Label Grid.Row="4" Name="showOrderLabel" Content="" />
+    </Grid>
+</Window>

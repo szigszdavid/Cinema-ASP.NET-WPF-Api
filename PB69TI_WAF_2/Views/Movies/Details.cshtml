@@ -1,0 +1,71 @@
+﻿@model Cinema.Persistence.Movie
+
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Director)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Director)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Szinopszis)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Szinopszis)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Length)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Length)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.List)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.List.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Image != null)
+            {
+                <img src="@Url.Action("DisplayImage", "Movies", new { id = Model.Id })" class="movie" /> <!-- MoviesController DisplayImage metódusát(action) meghívjuk és adunk neki egy paramétert a new-val-->
+                <!--A class="movie" wwwwroot/css/site.css-ben van-->
+            }
+        </dd>
+        <dd class="col-sm-10">
+            @for (int i = 0; i < Model.Screenings.Count; i++)
+            {
+                
+            <a asp-action="Edit" asp-controller="Screenings" asp-route-id="@Model.Id" asp-route-screeningId ="@i" asp-route-screeningTime="@Model.Screenings[i].ScreenTime">@Html.DisplayFor(model => model.Screenings[i].ScreenTime)</a>
+            }
+
+        </dd>
+    </dl>
+</div>
+<div>
+    
+    <a asp-action="Details" asp-controller="Lists" asp-route-id="@Model.ListId">Back to List</a>
+</div>

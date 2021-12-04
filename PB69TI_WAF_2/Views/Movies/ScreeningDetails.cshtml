@@ -1,0 +1,63 @@
+﻿@model Cinema.Persistence.Screening
+
+@{
+    ViewData["Title"] = "ScreeningDetails";
+}
+
+<h1>ScreeningDetails</h1>
+
+<div>
+    <h4>Screening</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ScreenTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ScreenTime)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <br />
+    @for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            if (Model.Seats[i * 10 + j].SeatValue == 1)
+            {
+                <input type="button" value="" style="background-color: gray" class="btn btn-primary" onclick="location.href='@Url.Action("SeatClicked", "Movies", new { id = Model.MovieId, rowindex = i, columnindex = j, time = Model.ScreenTime  })'" disabled />
+
+            }
+            else if (Model.Seats[i * 10 + j].SeatValue == 2)
+            {
+                <input type="button" value="" style="background-color: orange" class="btn btn-primary" onclick="location.href='@Url.Action("SeatClicked", "Movies", new { id = Model.MovieId, rowindex = i, columnindex = j, time = Model.ScreenTime  })'" />
+            }
+            else if (Model.Seats[i * 10 + j].SeatValue == 3)
+            {
+                <input type="button" value="@Model.Seats[i * 10 + j].SeatValue" style="background-color: red" class="btn btn-primary"  />
+            }
+            else
+            {
+                <input type="button" value="" style="background-color: green" class="btn btn-primary" onclick="location.href='@Url.Action("SeatClicked", "Movies", new { id = Model.MovieId, rowindex = i, columnindex = j, time = Model.ScreenTime  })'" />
+            }
+        }
+        <br />
+    }
+    <br />
+</div>
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="PhoneNumber" class="control-label"></label>
+    <input asp-for="PhoneNumber" class="form-control" />
+    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+</div>
+<div>
+    <input type="button" value="Make Purchase" class="btn btn-primary" onclick="location.href='@Url.Action("PurchaseClicked", "Movies", new { id = Model.MovieId, time = Model.ScreenTime })'" />
+    <a asp-action="Details" asp-controller="Movies" asp-route-id="@Model.MovieId">Back to List</a>
+</div>

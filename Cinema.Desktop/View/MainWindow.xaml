@@ -1,0 +1,87 @@
+﻿<Window x:Class="Cinema.Desktop.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:Cinema.Desktop.View"
+        mc:Ignorable="d"
+        Title="TodoList" Height="500" Width="800">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding RefreshListsCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Refresh lists" Command="{Binding RefreshListsCommand}" />
+            <MenuItem Header="Logout" Command="{Binding LogoutCommand}" />
+        </Menu>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0">
+                <GroupBox.Header>
+                    <Label Content="Lists:" />
+                </GroupBox.Header>
+                <DataGrid ItemsSource="{Binding Lists}"
+                      VerticalContentAlignment="Stretch"  IsReadOnly="True"
+                      AutoGenerateColumns="False" HeadersVisibility="None"
+                      SelectedItem="{Binding SelectedList}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Name}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBox Width="100"  Height="21" Margin="5" Text="{Binding SelectedListName, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Add List" Command="{Binding AddListCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Edit List" Command="{Binding EditListCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Delete List" Command="{Binding DeleteListCommand}" />
+            </StackPanel>
+            <GroupBox Grid.Row="2">
+                <GroupBox.Header>
+                    <Label Content="Movies:" />
+                </GroupBox.Header>
+                <DataGrid VerticalContentAlignment="Stretch" ItemsSource="{Binding Movies}" IsReadOnly="True"
+                      AutoGenerateColumns="False" SelectedItem="{Binding SelectedItem}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Image">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Image}" MaxHeight="48" MaxWidth="48" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Title" Binding="{Binding Title}" />
+                        <DataGridTextColumn Header="ReleaseDate" Binding="{Binding ReleaseDate}" />
+                        <DataGridTextColumn Header="ScreeninTimes" Binding="{Binding ScreeningTimes}" Width="*">
+
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" RenderTransformOrigin="0.52,0.639">
+                <Button Width="73"  Height="21" Margin="5" Content="Add Item" Command="{Binding AddMovieCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Edit Item" Command="{Binding EditMovieCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Delete Item" Command="{Binding DeleteMovieCommand}" />
+                <Button Name="addScreeningButton" Content="Add Screening" Width="97" Height="18" />
+                <Button Name="showScreeningButton" Content="Show Screenings"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

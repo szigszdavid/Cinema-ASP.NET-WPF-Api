@@ -1,0 +1,139 @@
+﻿@model Cinema.Persistence.List
+
+@{
+    ViewData["Title"] = "Cinema Movies";
+}
+
+<h1>@Html.DisplayFor(model => model.Name)</h1>
+
+<table class="table" style="background: green">
+    <thead>
+        
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @if (Model.Movies.ElementAt(0).Image != null)
+                {
+                    <img src="@Url.Action("DisplayImage", "Movies", new { id = Model.Movies.ElementAt(0).Id })" class="newmovie" /> <!-- MoviesController DisplayImage metódusát(action) meghívjuk és adunk neki egy paramétert a new-val-->
+                    <!--A class="movie" wwwwroot/css/site.css-ben van-->
+                }
+                <br />
+                <a aps-action="Details" asp-controller="Movies" asp-route-id="@Model.Movies.ElementAt(0).Id">@Model.Movies.ElementAt(0).Title</a>
+
+            </td>
+            <td>
+                @if (Model.Movies.ElementAt(1).Image != null)
+                {
+                    <img src="@Url.Action("DisplayImage", "Movies", new { id = Model.Movies.ElementAt(1).Id })" class="newmovie" /> <!-- MoviesController DisplayImage metódusát(action) meghívjuk és adunk neki egy paramétert a new-val-->
+                    <!--A class="movie" wwwwroot/css/site.css-ben van-->
+                }
+                <br />
+                <a aps-action="Details" asp-controller="Movies" asp-route-id="@Model.Movies.ElementAt(1).Id">@Model.Movies.ElementAt(1).Title</a>
+
+            <td>
+                @if (Model.Movies.ElementAt(2).Image != null)
+                {
+                    <img src="@Url.Action("DisplayImage", "Movies", new { id = Model.Movies.ElementAt(2).Id })" class="newmovie" /> <!-- MoviesController DisplayImage metódusát(action) meghívjuk és adunk neki egy paramétert a new-val-->
+                    <!--A class="movie" wwwwroot/css/site.css-ben van-->
+                }
+                <br />
+                <a aps-action="Details" asp-controller="Movies" asp-route-id="@Model.Movies.ElementAt(2).Id">@Model.Movies.ElementAt(2).Title</a>
+
+            </td>
+            <td>
+                @if (Model.Movies.ElementAt(3).Image != null)
+                {
+                    <img src="@Url.Action("DisplayImage", "Movies", new { id = Model.Movies.ElementAt(3).Id })" class="newmovie" /> <!-- MoviesController DisplayImage metódusát(action) meghívjuk és adunk neki egy paramétert a new-val-->
+                    <!--A class="movie" wwwwroot/css/site.css-ben van-->
+                }
+                <br />
+                <a aps-action="Details" asp-controller="Movies" asp-route-id="@Model.Movies.ElementAt(3).Id">@Model.Movies.ElementAt(3).Title</a>
+
+            </td>
+            <td>
+                @if (Model.Movies.ElementAt(4).Image != null)
+                {
+                    <img src="@Url.Action("DisplayImage", "Movies", new { id = Model.Movies.ElementAt(4).Id })" class="newmovie" /> <!-- MoviesController DisplayImage metódusát(action) meghívjuk és adunk neki egy paramétert a new-val-->
+                    <!--A class="movie" wwwwroot/css/site.css-ben van-->
+                }
+                <br />
+                <a aps-action="Details" asp-controller="Movies" asp-route-id="@Model.Movies.ElementAt(4).Id">@Model.Movies.ElementAt(4).Title</a>
+
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Title
+            </th>   
+            <th>
+                <a asp-action="Details" asp-controller="Lists" asp-route-sortOrder="@ViewData["ReleaseSortParam"]">ReleaseDate</a> <!--EZ nem elég, ListControlban kell folytatni-->
+                <!--ha egy másik controllernek szeretnénk megadni a Details actionjét, akkor az asp_controler lehet beállítani, itt a deafult a Lists-->
+            </th>
+            <th>
+                Screenings
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var movie in Model.Movies)
+        {
+            <tr>
+                <td>
+                    <!--kukaccal lehet logikát berakni a HTML-be-->
+                    @if (movie.Image != null)
+                    {
+                        <img src="@Url.Action("DisplayImage", "Movies", new { id = movie.Id })" class="movie"/> <!-- MoviesController DisplayImage metódusát(action) meghívjuk és adunk neki egy paramétert a new-val-->
+                                                                                                                <!--A class="movie" wwwwroot/css/site.css-ben van-->
+                    }
+                </td>
+                <td>
+                    @if (movie.Title != null)
+                    {
+                    <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.Id">@Html.DisplayFor(modelItem => movie.Title)</a>
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => movie.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => movie.ScreeningTimes)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Movies" asp-route-id="@movie.Id">Edit</a>
+                    <a asp-action="Delete" asp-controller="Movies" asp-route-id="@movie.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-action="CreateMovie" asp-route-id="@Model.Id">Add movie</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Rename list</a> |
+    <a asp-action="Index">Back to list</a>
+    <br />
+    
+
+
+</div>
+<a asp-action="Index">Back to list</a>
+<table>
+    <asp:Button id="Button1"
+                Text="Submit"
+                OnClick="SubmitBtn_Click"
+                runat="server" />
+
+</table>
+
+
